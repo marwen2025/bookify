@@ -2,6 +2,7 @@ package com.example.bookify.service;
 
 import com.example.bookify.dao.BookRepository;
 import com.example.bookify.entities.Book;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,26 @@ import java.util.Optional;
 public class BookService implements IBookService{
     private BookRepository bookRepository;
 
-    @Override
-    public void SaveBook(Book b, MultipartFile photo, MultipartFile book) throws IOException {
-        String bookPdf=saveFile(book);
-        if(!photo.isEmpty()){
-            String bookImage=saveFile(photo);
 
+
+    @Override
+    @Transactional
+    public void SaveBook(Book b, MultipartFile photo, MultipartFile book) throws IOException {
+        try{
+
+            if(!photo.isEmpty()){
+                String bookImage=saveFile(photo);
+                b.setPhoto(bookImage);
+
+            }
+            if(!book.isEmpty()){
+                String bookPdf=saveFile(book);
+                b.setBookPdf(bookPdf);
+            }
+            bookRepository.save(b);
+            System.out.println("book saved succ");
+        }catch(Exception e){
+            System.out.println("error saving book"+e);
         }
     }
     @Override
@@ -36,6 +51,7 @@ public class BookService implements IBookService{
     }
     @Override
     public Page<Book> getBookByMc(String mc , Pageable b){
+
         return bookRepository.findByTitleContains(mc, b);
     }
     @Override

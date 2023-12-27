@@ -1,6 +1,7 @@
 package com.example.bookify.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class Author {
     private String name;
     @NotNull
     private int birthYear;
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
     List<Book> books;
 

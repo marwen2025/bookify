@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Bookify Books</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <!-- Container wrapper -->
+    <div class="container mx-2">
+        <!-- Navbar brand -->
+        <a class="navbar-brand me-2" th:href="@{'/admin/books'}">
+            <img
+                    src="/files/bookify.png"
+                    height="24"
+                    alt="Bookify Logo"
+                    loading="lazy"
+                    style="margin-top: -1px;"
+            />
+        </a>
+        Bookify
+
+        <!-- Toggle button -->
+
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
+            </ul>
+            <!-- Left links -->
+
+            <div class="d-flex align-items-center">
+                <button data-mdb-ripple-init type="button" class="btn btn-link px-3 me-2">
+                    Login
+                </button>
+
+            </div>
+        </div>
+        <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<div class="card-body text-center px-4 py-5 px-md-5">
+
+    <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/admin/addBook}" class="btn btn-primary text-start" style="position: absolute; top: 60px; right: 10px;z-index: 9999;">Add Book</a>
+
+    <form style=" display: flex; margin-top: 50px;flex-direction: row;  " class="form-inline" th:action="@{/admin/books}" method="get">
+
+        <div style="width: 90%; height: 90% " class="form-group mx-sm-3 mb-2">
+
+            <label for="inputPassword2" class="sr-only">Key Word</label>
+            <input style="height: 40px" type="text" class="form-control" id="inputPassword2" name="mc" th:value="${mc}" placeholder="Search..." >
+        </div>
+
+        <button style="height: 40px" type="submit" class="btn btn-primary fa fa-search" ></button>
+    </form>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                #
+            </th>
+            <th scope="col">
+                photo
+            </th>
+            <th scope="col">
+                ISBN
+            </th>
+            <th scope="col">
+                Title
+            </th>
+            <th scope="col">
+                Author
+            </th>
+            <th scope="col">
+                Publication Year
+            </th>
+            <th>
+                Genres
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p:${books}">
+
+            <td th:text="${p.id}" ></td>
+            <td th:if="${p.photo=='' || p.photo==null}">
+                <img src="/files/inconnu.jpg" width="60" height="60">
+            </td>
+            <td th:unless="${p.photo=='' || p.photo==null}">
+                <img th:src="${'/files/'+p.photo}" width="60" height="80">
+
+            </td>
+            <td  class="align-middle" th:text="${p.isbn}" ></td>
+            <td class="align-middle" th:text="${p.title}" ></td>
+            <td class="align-middle" th:text="${p?.author?.name}" ></td>
+            <td class="align-middle" th:text="${p.publicationYear}" ></td>
+            <td class="align-middle" >
+                <div  th:each="genre : ${p.genres}"><span th:text="${genre.name}"> </span> </div>
+
+            </td>
+
+
+
+
+
+            <td class="align-middle">
+                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')} or ${#authorization.expression('hasRole(''USER'')')}">
+                    <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <a th:href="@{'/admin/book/delete/'+${p.id}}" class="btn btn-danger fa fa-trash"></a>
+                        <a th:href="@{'/admin/book/edit/'+${p.id}}" class="btn btn-warning fa fa-edit"></a>
+                    </a>
+                    <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <a th:href="@{'/admin/book/'+${p.id}}" class="btn btn-success fa fa-eye"></a>
+                    </a>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        <ul class="nav nav-pills">
+            <li th:each="i,c:${pages}">
+                <a th:href="@{/user/books(mc=${mc}, page=${c.index})}" th:text="${c.index+1}"
+                   th:class="${c.index==currentPage?'btn btn-primary mx-2 ':'btn btn-outline-primary'}">
+
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

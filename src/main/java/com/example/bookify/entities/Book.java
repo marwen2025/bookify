@@ -19,7 +19,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(min=13,max=13, message = "The ISBN field must have exactly 13 numbers. ")
+    //@Size(min=13,max=13, message = "The ISBN field must have exactly 13 numbers. ")
     //@Digits(integer = 13, fration =0, message="The ISBN field must have exactly 13 numbers. ")
     @Column(unique = true)
     private Integer isbn;
@@ -32,7 +32,7 @@ public class Book {
     @NotNull(message = " at least one genre is required")
     private List<Genre> genres;
     private String photo;
-    @NotNull(message = "you must add a book as pdf")
+    //@NotNull(message = "you must add a book as pdf")
     private String bookPdf;
     private int publicationYear;
 

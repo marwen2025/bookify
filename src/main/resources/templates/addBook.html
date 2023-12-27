@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Add this to the head section of your HTML file -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Bookify</title>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-info text-white"><h3>Add Book </h3></div>
+        <div class="card-body">
+            <form method="post" th:action="@{/admin/addBook}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="number" class="form-control" id="isbn" name="isbn" placeholder="Enter ISBN" th:value="${book.isbn}">
+                    <span class="text-danger" th:errors="${book.isbn}"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" th:value="${book.title}">
+                    <span class="text-danger" th:errors="${book.title}"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="publicationYear">Publication Year</label>
+                    <input type="number" class="form-control" id="publicationYear" name="publicationYear" placeholder="Enter publication Year" th:value="${book.publicationYear}">
+                    <span class="text-danger" th:errors="${book.publicationYear}"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="author">Author:</label>
+                    <select class="form-control select2" id="author" name="author">
+                        <option value="" selected="selected" disabled hidden>Select The Author</option>
+                        <option th:each="a:${authors}" th:value="${a.id}" th:text="${a.name}" th:selected="${book.id!=null && book.author.id==a.id}"></option>
+                    </select>
+                    <span class="text-danger" th:errors="${book.author}"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="genres">Genres:</label>
+                    <select class="form-control select2" id="genres" name="genres" multiple="multiple">
+                        <option value="" disabled hidden>Select Genres</option>
+                        <option th:each="genre: ${genres}" th:value="${genre.id}" th:text="${genre.name}" th:selected="${book.genres != null and book.genres.contains(genre)}"></option>
+                    </select>
+                    <span class="text-danger" th:errors="${book.genres}"></span>
+                </div>
+
+
+
+                <div>
+                    Add image:
+                    <input type="file" accept="image/*"  name="image">
+                </div>
+                <div>
+                    Add Book PDF:
+                    <input type="file" accept="application/pdf" name="pdf">
+                </div>
+
+                <div class="text-center mt-5" >
+                    <a th:href="@{/admin/books}" class="btn btn-outline-info">Cancel</a>
+                    <button  type="submit" class="btn btn-outline-info">Save Book</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+</div>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
