@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <title>Product Info</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <!-- Container wrapper -->
+    <div class="container mx-2">
+        <!-- Navbar brand -->
+        <a class="navbar-brand me-2" th:href="@{'/admin/books'}">
+            <img
+                    src="/files/bookify.png"
+                    height="24"
+                    alt="Bookify Logo"
+                    loading="lazy"
+                    style="margin-top: -1px;"
+            />
+        </a>
+        Bookify
+
+        <!-- Toggle button -->
+
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex  justify-content-between">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/books}">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/authors}">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/genres}">Genres</a>
+                </li>
+            </ul>
+            <!-- Left links -->
+
+            <div class="d-flex ">
+                <div class="d-flex ">
+                    <button data-mdb-ripple-init type="button" class="btn btn-link px-3 me-2">
+                        <span th:text="${#authentication.name}"></span>
+
+                    </button>
+                    <form method="post" th:action="@{/logout}">
+                        <button type="submit" class="btn btn-danger">se deconnecter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+
+<a th:href="@{/admin/books}" class="btn btn-outline-info fa fa-arrow-left" style=" top: 5px; left: 10px;z-index: 9999;" ></a>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-info text-white"><h3> Book Info </h3></div>
+        <div class="card-body ">
+            <form class="d-flex flex-row justify-content-between">
+                <div class="mb-3 ">
+                    <label class="form-label"><strong>Book Image:</strong></label>
+                    <Br>
+                    <img th:src="@{/files/{filename}(filename=${book.photo})}" alt="Book Image" class="img-fluid" width="180" height="240" />
+                </div>
+                <div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Book ID:</strong></label>
+                        <span class="form-control-plaintext" th:text="${book.id}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Book ISBN:</strong></label>
+                        <span class="form-control-plaintext" th:text="${book.isbn}"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Book Title:</strong></label>
+                        <span class="form-control-plaintext" th:text="${book.title}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Book Author:</strong></label>
+                        <span class="form-control-plaintext" th:text="${book.author.name}"></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Book Genre(s):</strong></label>
+                        <div  th:each="genre : ${book.genres}">
+                            <span class="form-control-plaintext" th:text="${genre.name}"> </span>
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Read Book:</strong></label>
+                        <div>
+                            <a class="btn btn-outline-info fa-solid fa-download" th:if="${book.bookPdf}" th:href="@{/files/{fileName}(fileName=${book.bookPdf})}" download="book">
+                                Download PDF
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+
+            </form>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

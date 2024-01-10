@@ -20,7 +20,7 @@ public class AuthorController
     @GetMapping("/")
     public String home()
     {
-        return "redirect:/index";
+        return "redirect:/admin/books";
     }
     @GetMapping("/admin/authors")
     public String getAllAuthors(Model m,

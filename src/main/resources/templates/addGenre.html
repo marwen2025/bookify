@@ -10,6 +10,56 @@
     <title>Bookify</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <!-- Container wrapper -->
+    <div class="container mx-2">
+        <!-- Navbar brand -->
+        <a class="navbar-brand me-2" th:href="@{'/admin/books'}">
+            <img
+                    src="/files/bookify.png"
+                    height="24"
+                    alt="Bookify Logo"
+                    loading="lazy"
+                    style="margin-top: -1px;"
+            />
+        </a>
+        Bookify
+
+        <!-- Toggle button -->
+
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex  justify-content-between">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/books}">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/authors}">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/genres}">Genres</a>
+                </li>
+            </ul>
+            <!-- Left links -->
+
+            <div class="d-flex ">
+                <div class="d-flex ">
+                    <button data-mdb-ripple-init type="button" class="btn btn-link px-3 me-2">
+                        <span th:text="${#authentication.name}"></span>
+
+                    </button>
+                    <form method="post" th:action="@{/logout}">
+                        <button type="submit" class="btn btn-danger">se deconnecter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
 <div class="container mt-5">
     <div class="card">
         <div class="card-header bg-info text-white"><h3>Add Genre </h3></div>
@@ -19,7 +69,7 @@
 
                 <div class="form-group mt-3">
                     <label for="name">name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Author Name" th:value="${genre.name}">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Genre" th:value="${genre.name}">
                     <span class="text-danger" th:errors="${genre.name}"></span>
                 </div>
 
@@ -27,7 +77,7 @@
 
                 <div class="text-center mt-5" >
                     <a th:href="@{/admin/genres}" class="btn btn-outline-info">Cancel</a>
-                    <button  type="submit" class="btn btn-outline-info">Save Author</button>
+                    <button  type="submit" class="btn btn-outline-info">Save Genre</button>
                 </div>
 
             </form>

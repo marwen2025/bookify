@@ -29,18 +29,29 @@
         <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarButtonsExample">
             <!-- Left links -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex  justify-content-between">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Dashboard</a>
+                    <a class="nav-link" th:href="@{/admin/books}">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/authors}">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/genres}">Genres</a>
                 </li>
             </ul>
             <!-- Left links -->
 
-            <div class="d-flex align-items-center">
-                <button data-mdb-ripple-init type="button" class="btn btn-link px-3 me-2">
-                    Login
-                </button>
+            <div class="d-flex ">
+                <div class="d-flex ">
+                    <button data-mdb-ripple-init type="button" class="btn btn-link px-3 me-2">
+                        <span th:text="${#authentication.name}"></span>
 
+                    </button>
+                    <form method="post" th:action="@{/logout}">
+                        <button type="submit" class="btn btn-danger">se deconnecter</button>
+                    </form>
+                </div>
             </div>
         </div>
         <!-- Collapsible wrapper -->
@@ -133,7 +144,7 @@
     <div class="d-flex justify-content-center">
         <ul class="nav nav-pills">
             <li th:each="i,c:${pages}">
-                <a th:href="@{/user/books(mc=${mc}, page=${c.index})}" th:text="${c.index+1}"
+                <a th:href="@{/admin/books(mc=${mc}, page=${c.index})}" th:text="${c.index+1}"
                    th:class="${c.index==currentPage?'btn btn-primary mx-2 ':'btn btn-outline-primary'}">
 
                 </a>

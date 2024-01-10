@@ -60,6 +60,7 @@ public class BookService implements IBookService{
     }
     @Override
     public void deleteBook(Long id){
+        deleteFile(id);
         bookRepository.deleteById(id);
     }
     @Override
@@ -105,5 +106,41 @@ public class BookService implements IBookService{
         Files.write(path, file.getBytes());
 
         return newFileName;
+    }
+    public void deleteFile(Long id){
+        String filePath = "static/files/";
+        String photo=getBook(id).getPhoto();
+        String pdfFile=getBook(id).getBookPdf();
+        if (photo != null){
+            try {
+                // Create a Path object from the file path
+                Path path = Paths.get(filePath+photo);
+
+                // Use the Files.delete method to delete the file
+                Files.delete(path);
+
+                System.out.println("File deleted successfully.");
+            } catch (IOException e) {
+                // Handle any potential IOException
+                e.printStackTrace();
+            }
+        }
+        if (pdfFile != null){
+            try {
+                // Create a Path object from the file path
+                Path path = Paths.get(filePath+pdfFile);
+
+                // Use the Files.delete method to delete the file
+                Files.delete(path);
+
+                System.out.println("File deleted successfully.");
+            } catch (IOException e) {
+                // Handle any potential IOException
+                e.printStackTrace();
+            }
+        }
+
+
+
     }
 }

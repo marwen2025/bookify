@@ -40,12 +40,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
     {
-        //httpSecurity.formLogin(form->form.permitAll());
+        httpSecurity.formLogin(form->form.permitAll());
+        // httpSecurity.formLogin(form->form.loginPage("/login"));
         httpSecurity.httpBasic(Customizer.withDefaults());
         httpSecurity.authorizeHttpRequests(authorize->authorize.requestMatchers("/admin/**").hasAuthority("ADMIN"));
-        httpSecurity.authorizeHttpRequests(authorize->authorize.requestMatchers("/user/**").hasAuthority("USER"));
-        httpSecurity.authorizeHttpRequests(authorize->authorize.anyRequest().authenticated());
+        httpSecurity.authorizeHttpRequests(authorize->authorize.requestMatchers("/api/**").hasAuthority("USER"));
         httpSecurity.exceptionHandling(exception->exception.accessDeniedPage("/errorPage"));
+        httpSecurity.authorizeHttpRequests(authorize->authorize.anyRequest().authenticated());
         httpSecurity.userDetailsService(userDetailsServiceImplementation);
         httpSecurity.csrf(c->c.disable());
         return httpSecurity.build();

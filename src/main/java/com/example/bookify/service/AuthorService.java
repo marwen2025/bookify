@@ -38,7 +38,8 @@ public class AuthorService implements IAuthorService{
             Author existingAuthor=existingAuthorOptional.get();
             existingAuthor.setName(editedAuthor.getName());
             existingAuthor.setBirthYear(editedAuthor.getBirthYear());
-            authorRepository.save(editedAuthor);
+            authorRepository.save(existingAuthor);
+
         }
     }
 

@@ -39,6 +39,7 @@ public class BookController {
     }
     @GetMapping("/admin/book/delete/{id}")
     public String deleteBook(@PathVariable("id")Long idBook){
+
         bookService.deleteBook(idBook);
         return "redirect:/admin/books";
     }
@@ -47,7 +48,7 @@ public class BookController {
     {
         m.addAttribute("book",new Book());
         m.addAttribute("genres",genreService.getAllGenres());
-        m.addAttribute("authors",authorService.getAllAuthors());
+        m.addAttribute("authors ",authorService.getAllAuthors());
         return "addBook";
     }
     @PostMapping("admin/addBook")
@@ -72,9 +73,16 @@ public class BookController {
     }
 
     @PostMapping("/admin/book/edit/{id}")
-    public String editProduct(@PathVariable("id") Long id, @ModelAttribute Book editedBook, @RequestParam("image") MultipartFile photo,@RequestParam("pdf") MultipartFile pdf) throws IOException {
+    public String editBook(@PathVariable("id") Long id, @ModelAttribute Book editedBook, @RequestParam("image") MultipartFile photo,@RequestParam("pdf") MultipartFile pdf) throws IOException {
         bookService.editBook(id, editedBook, photo,pdf);
         return "redirect:/admin/books";
     }
+    @GetMapping("/admin/book/{id}")
+    public String showBook(@PathVariable("id") Long id,Model m){
+        Book book=bookService.getBook(id);
+        m.addAttribute("book",book);
+        return "showBook";
+    }
+
 
 }
