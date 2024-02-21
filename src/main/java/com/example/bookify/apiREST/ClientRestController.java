@@ -46,23 +46,37 @@ public class ClientRestController {
         return bookService.getBook(id);
     }
 
-    @GetMapping("/showbookpdf/{id}")
-    public ResponseEntity<Resource> showBookPdf(@PathVariable("id") Long id) throws IOException{
+    @RequestMapping("/showbookpdf/{id}")
+    public ResponseEntity<Resource> showBookPdf(@PathVariable("id") Long id) throws IOException {
+        Book book = bookService.getBook(id);
 
-        Book book=bookService.getBook(id);
-        String pdfName = book.getBookPdf();
-        String filePath = "static/files/" + pdfName;
-        Resource resource = new UrlResource(Paths.get(filePath).toUri());
-        if (resource.exists() && resource.isReadable()) {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(resource);
+        if (book != null) {
+            String pdfName = book.getBookPdf();
+            String path = "static/files/" + pdfName; // Adjust the path based on your file structure
+            Resource resource = new UrlResource(Paths.get(path).toUri());
+            System.out.println(pdfName);
+
+            System.out.println(path);
+
+            if (resource.exists() && resource.isReadable()) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
+
+
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(resource);
+            } else {
+                // Handle file not found
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
         } else {
-            // Handle file not found
+            // Handle book not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
     @GetMapping("/showbookimage/{id}")
     public byte[] showBookImage(@PathVariable("id") Long id) throws IOException {
 
